@@ -1,0 +1,23 @@
+{
+  "plugins": [
+    ["react-hot-loader/babel"],
+    ["external-helpers"],
+    [
+      "babel-plugin-transform-runtime", {
+        "polyfill": false
+      }
+    ],
+    [
+      "transform-runtime", {
+        "polyfill": false
+      }
+    ],
+    [
+      "import", [{
+        "style": "css",
+        "libraryName": "antd-mobile"
+      }]
+    ]
+  ],
+  "presets": [["es2015", {"modules": false}], "stage-1", "react"]
+}
