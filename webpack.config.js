@@ -5,26 +5,22 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const config = {
   devtool: 'source-map',
-  entry: [
-    'react-hot-loader/patch',
-    'webpack-dev-server/client?http://localhost:8080',
-    'webpack/hot/only-dev-server',
-    path.resolve(__dirname, 'src/index')
-  ],
+  entry: {
+    list: [path.resolve(__dirname, 'src/pages/list'), 'webpack/hot/only-dev-server'],
+    vote: [path.resolve(__dirname, 'src/pages/vote'), 'webpack/hot/only-dev-server'],
+    devServerClient: ['react-hot-loader/patch', 'webpack-dev-server/client?http://0.0.0.0:8080']
+  },
   output: {
     path: path.join(__dirname, 'dist'),
     filename: '[name].js',
-    chunkFilename: '[id].chunk.js',
     publicPath: '/'
   },
-  context: path.resolve(__dirname, 'src'),
-
   resolve: {
     modules: [
       path.join(__dirname, 'src'),
       'node_modules'
     ],
-    extensions: ['.jsx', '.js']
+    extensions: ['.web.js', '.jsx', '.js']
   },
   module: {
     rules: [
@@ -38,13 +34,7 @@ const config = {
       }
     ]
   },
-  plugins: [
-    new webpack.optimize.CommonsChunkPlugin({
-      // minChunks: 2,
-      name: 'shared',
-      filename: 'shared.js'
-    })
-  ]
+  plugins: [new webpack.optimize.CommonsChunkPlugin({name: 'shared', filename: 'shared.js'})]
 };
 
 if (process.env.NODE_ENV === 'production') {
@@ -54,13 +44,28 @@ if (process.env.NODE_ENV === 'production') {
     },
     sourceMap: true
   }));
-  config.plugins.push(new ExtractTextPlugin({filename: 'bundle.css', disable: false, allChunks: true}));
+  config.plugins.push(new ExtractTextPlugin({filename: '[name].css', disable: false, allChunks: true}));
   config.module.rules.push({
     test: /\.less$/i,
     loader: ExtractTextPlugin.extract({
       fallback: 'style-loader',
       use: [
-        'css-loader', 'postcss-loader', 'less-loader'
+        {
+          loader: 'css-loader',
+          options: {
+            sourceMap: true
+          }
+        }, {
+          loader: 'postcss-loader',
+          options: {
+            sourceMap: true
+          }
+        }, {
+          loader: 'less-loader',
+          options: {
+            sourceMap: true
+          }
+        }
       ],
       publicPath: '/dist'
     })
@@ -70,16 +75,26 @@ if (process.env.NODE_ENV === 'production') {
     loader: ExtractTextPlugin.extract({
       fallback: 'style-loader',
       use: [
-        'css-loader', 'postcss-loader'
+        {
+          loader: 'css-loader',
+          options: {
+            sourceMap: true
+          }
+        }, {
+          loader: 'postcss-loader',
+          options: {
+            sourceMap: true
+          }
+        }
       ],
       publicPath: '/dist'
     })
   });
 } else {
-  config.devtool = '#cheap-module-source-map'
+  config.devtool = 'cheap-eval-source-map'
   config.devServer = {
     hot: true,
-    contentBase: path.resolve(__dirname, 'dist'),
+    contentBase: path.resolve(__dirname, 'page'),
     publicPath: '/'
   }
   config.module.rules.push({
@@ -88,10 +103,7 @@ if (process.env.NODE_ENV === 'production') {
   });
   config.module.rules.push({
     test: /\.css$/i,
-    loader: ExtractTextPlugin.extract({
-      fallback: 'style-loader',
-      use: ['style-loader', 'css-loader', 'postcss-loader', 'less-loader']
-    })
+    use: ['style-loader', 'css-loader', 'postcss-loader']
   });
   config.plugins.push(new webpack.HotModuleReplacementPlugin());
   config.plugins.push(new webpack.NamedModulesPlugin());

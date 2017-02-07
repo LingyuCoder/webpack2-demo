@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 
 import { AppContainer } from 'react-hot-loader';
 
-import App from './components/app';
+import App from '../components/vote/index';
 
 const render = (Component) => {
   ReactDOM.render(
@@ -16,8 +16,4 @@ const render = (Component) => {
 
 render(App);
 
-if (module.hot) {
-  module.hot.accept('./components/app', () => {
-    render(App)
-  });
-}
+if (module.hot) module.hot.accept('../components/vote/index', () => render(App));

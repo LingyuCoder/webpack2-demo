@@ -1,7 +1,8 @@
+import './index.less';
 import React from 'react';
-import './app.less';
-export default class App extends React.Component {
-  static displayName = 'app'
+
+export default class Vote extends React.Component {
+  static displayName = 'Vote'
   static propTypes = {
     /**
      * content of element
@@ -9,7 +10,7 @@ export default class App extends React.Component {
     content: React.PropTypes.string
   }
   static defaultProps = {
-    content: 'Hello world'
+    content: 'This is vote'
   }
   constructor() {
     super();

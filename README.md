@@ -2,6 +2,16 @@
 
 A demo of webpack2
 
+## Features
+
+- Antd mobile
+- Hot module replacement
+- Multiple entry points
+- React
+- Babel Stage 1
+- Less
+- PostCSS
+
 ```bash
 $ npm install
 $ npm start # start dev server
