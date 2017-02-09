@@ -6,6 +6,7 @@ A demo of webpack2
 
 - Antd mobile
 - Hot module replacement
+- Mock server
 - Multiple entry points
 - React
 - Babel Stage 1
