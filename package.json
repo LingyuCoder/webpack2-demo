@@ -4,7 +4,7 @@
   "description": "none",
   "main": "./src/index.jsx",
   "scripts": {
-    "start": "webpack-dev-server --open",
+    "start": "node dev-server.js",
     "build": "NODE_ENV='production' webpack -p"
   },
   "author": "lingyucoder",
@@ -39,7 +39,8 @@
     "should": "^8.1.1",
     "style-loader": "^0.13.1",
     "webpack": "^2.1.0-beta.25",
-    "webpack-dev-server": "^2.1.0-beta.0"
+    "webpack-dev-server": "^2.3.0",
+    "webpack-hot-middleware": "^2.16.1"
   },
   "repository": {
     "type": "git",
