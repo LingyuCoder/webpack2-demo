@@ -2,13 +2,20 @@
 const path = require('path');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const port =  process.env.PORT || 7878;
+const port = process.env.PORT || 7878;
+const postcss = require('./postcss.config');
 
 const config = {
   devtool: 'source-map',
   entry: {
-    list: [path.resolve(__dirname, 'src/pages/list'), 'webpack/hot/only-dev-server'],
-    vote: [path.resolve(__dirname, 'src/pages/vote'), 'webpack/hot/only-dev-server'],
+    list: [
+      path.resolve(__dirname, 'src/pages/list'),
+      'webpack/hot/only-dev-server'
+    ],
+    vote: [
+      path.resolve(__dirname, 'src/pages/vote'),
+      'webpack/hot/only-dev-server'
+    ],
     devServerClient: ['react-hot-loader/patch', `webpack-hot-middleware/client?http://0.0.0.0:${port}`]
   },
   output: {
@@ -36,8 +43,7 @@ const config = {
     ]
   },
   plugins: [
-    new webpack.optimize.CommonsChunkPlugin({name: 'shared', filename: 'shared.js'}),
-    // new webpack.HotModuleReplacementPlugin(),
+    new webpack.optimize.CommonsChunkPlugin({name: 'shared', filename: 'shared.js'})
   ]
 };
 
@@ -61,9 +67,7 @@ if (process.env.NODE_ENV === 'production') {
           }
         }, {
           loader: 'postcss-loader',
-          options: {
-            sourceMap: true
-          }
+          options: postcss
         }, {
           loader: 'less-loader',
           options: {
@@ -86,9 +90,7 @@ if (process.env.NODE_ENV === 'production') {
           }
         }, {
           loader: 'postcss-loader',
-          options: {
-            sourceMap: true
-          }
+          options: postcss
         }
       ],
       publicPath: '/dist'
@@ -103,11 +105,31 @@ if (process.env.NODE_ENV === 'production') {
   }
   config.module.rules.push({
     test: /\.less$/i,
-    use: ['style-loader', 'css-loader', 'postcss-loader', 'less-loader']
+    use: [
+      {
+        loader: 'style-loader'
+      }, {
+        loader: 'css-loader'
+      }, {
+        loader: 'postcss-loader',
+        options: postcss
+      }, {
+        loader: 'less-loader'
+      }
+    ]
   });
   config.module.rules.push({
     test: /\.css$/i,
-    use: ['style-loader', 'css-loader', 'postcss-loader']
+    use: [
+      {
+        loader: 'style-loader'
+      }, {
+        loader: 'css-loader'
+      }, {
+        loader: 'postcss-loader',
+        options: postcss
+      }
+    ]
   });
   config.plugins.push(new webpack.HotModuleReplacementPlugin());
   config.plugins.push(new webpack.NamedModulesPlugin());
